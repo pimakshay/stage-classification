@@ -1,0 +1,11 @@
+*.pyc
+*.idea
+.vscode/*
+_archiv/*
+.DS_store
+*.ipa
+*.log
+*.zip
+data/
+run_scripts/lightning_logs/
+*.ipynb_checkpoints
