@@ -5,6 +5,28 @@ from torch.utils.data import Dataset, DataLoader
 from PIL import Image
 
 
+def check_and_update_csv(old_csv="", new_csv="", img_folders=""):
+    # Load CSV file into a DataFrame
+    df = pd.read_csv(old_csv,sep=';')
+    cams = ["cam1","cam2","cam3","cam4"]
+
+    # Function to check if an image exists in the specified folder
+    def image_exists(image_name):
+        for cam in cams:
+            image_path = os.path.join(img_folders, cam, image_name)
+            if os.path.exists(image_path):
+                return os.path.exists(image_path)
+        return os.path.exists(image_path)
+
+    # Filter out rows where the image does not exist
+    df = df[df['imagename'].apply(image_exists)]
+
+    # Save the updated DataFrame back to the CSV file
+    df.to_csv(new_csv, index=False,sep=';')
+
+
+
+
 def split_train_val_test(data_dir, data, ratio=[0.7,0.2,0.1], save_as_csv=False):
     cameras = data['camera'].unique()
     train_data, val_data, test_data = pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
