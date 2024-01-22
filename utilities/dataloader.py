@@ -61,7 +61,7 @@ class ConstructionDataset(Dataset):
     def __getitem__(self, idx):
         img_name = os.path.join(self.img_dir ,self.dataframe['camera'][idx], self.dataframe['imagename'][idx])
         image = Image.open(img_name).convert('RGB')
-        label = self.dataframe['label'][idx]
+        label = self.dataframe['numbered_label'][idx]
 
         if self.transform:
             image = self.transform(image)
