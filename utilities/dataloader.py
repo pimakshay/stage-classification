@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from torch.utils.data import Dataset, DataLoader
 from PIL import Image
+from torchvision import transforms
 
 
 def check_and_update_csv(old_csv="", new_csv="", img_folders=""):
@@ -23,8 +24,6 @@ def check_and_update_csv(old_csv="", new_csv="", img_folders=""):
 
     # Save the updated DataFrame back to the CSV file
     df.to_csv(new_csv, index=False,sep=';')
-
-
 
 
 def split_train_val_test(data_dir, data, ratio=[0.7,0.2,0.1], save_as_csv=False):
@@ -67,3 +66,15 @@ class ConstructionDataset(Dataset):
             image = self.transform(image)
 
         return image, label
+    
+
+
+def get_dataset(train_df, val_df, test_df, img_dir="", img_size=128):
+    transform = transforms.Compose([
+        transforms.Resize((img_size, img_size)), 
+        transforms.ToTensor(), # scales to [0.0,1.0]
+    ])
+    train_dataset = ConstructionDataset(train_df, img_dir, transform=transform)
+    val_dataset = ConstructionDataset(val_df, img_dir, transform=transform)
+    test_dataset = ConstructionDataset(test_df, img_dir, transform=transform)
+    return train_dataset,val_dataset,test_dataset
