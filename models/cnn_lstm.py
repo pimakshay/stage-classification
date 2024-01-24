@@ -10,13 +10,11 @@ class CNNLSTMModel(nn.Module):
             nn.ReLU(),
             nn.MaxPool2d(2,2), # o/p 75x75x64
         )
-
-
         self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)
         self.fc = nn.Linear(hidden_size, num_classes)
 
     def forward(self, x):
         cnnout = self.cnnetwork(x)
-        out, _ = self.lstm(cnnout.view()) # returns pred, lstm_cell_memory, lstm_hidden_states
+        out, _ = self.lstm(cnnout.view(cnnout.size(0), -1)) # returns pred, lstm_cell_memory, lstm_hidden_states
         out = self.fc(out)#self.fc(out[:, -1, :])
         return out

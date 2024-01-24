@@ -7,6 +7,6 @@ class LSTMModel(nn.Module):
         self.fc = nn.Linear(hidden_size, num_classes)
 
     def forward(self, x):
-        out, _ = self.lstm(x) # returns pred, lstm_cell_memory, lstm_hidden_states
+        out, _ = self.lstm(x.view(x.size(0), -1)) # returns pred, lstm_cell_memory, lstm_hidden_states
         out = self.fc(out)#self.fc(out[:, -1, :])
         return out

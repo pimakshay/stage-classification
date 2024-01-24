@@ -1,0 +1,20 @@
+
+model:
+  target: models.classifier_t2.Classifier
+  params:
+    data_dir: "/home/akshay/Documents/cse_sem_7/conxai_assignment/cloned/stage-classification/data"
+    image_size: &IMG_SIZE 150
+    channels: &IMG_CHANNELS 3
+    num_classes: &NUM_CLASSES 7
+    batch_size: 16 
+    max_tsteps: 10 #1e05
+    learning_rate: 1.0e-3
+    loss_type: "cross_entropy"
+    nn_model:
+      target: models.cnn_lstm.CNNLSTMModel
+      params:
+        input_size: 360000 # 3*150*150
+        hidden_size: 128
+        num_layers: 2
+        input_channels: *IMG_CHANNELS
+        num_classes: *NUM_CLASSES

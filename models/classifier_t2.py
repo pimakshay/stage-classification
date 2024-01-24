@@ -22,7 +22,7 @@ class Classifier(pl.LightningModule):
                  image_size=128,
                  channels=3,
                  num_classes=7,
-                 loss_type="mse",
+                 loss_type="cross_entropy",
                  learning_rate=0.001,
                  max_tsteps=100000,
                  batch_size=16,
@@ -40,7 +40,6 @@ class Classifier(pl.LightningModule):
         self.learning_rate = learning_rate
         self.max_tsteps = max_tsteps
 
-        self.input_shape = (self.sequence_length, self.image_size * self.image_size * 3)
         img_dir = os.path.join(data_dir, 'foundation_images/foundation_images')
 
         self.dataframe = pd.read_csv(os.path.join(data_dir, 'stage_labels_corr.csv'),sep=";")
@@ -77,7 +76,7 @@ class Classifier(pl.LightningModule):
         return loss
 
     def apply_model(self, x, y):
-        model_out = self.model(x.reshape(self.input_shape))
+        model_out = self.model(x)
 
         loss_dict = {}
         loss = self.get_loss(model_out, y, mean=False)

@@ -1,13 +1,13 @@
 
 model:
-  target: models.classifier.Classifier
+  target: models.classifier_t1.Classifier
   params:
-    data_dir: "/home/akshay/Documents/cse_sem_7/conxai_assignment/cloned/stage-classification/data"
+    data_dir: ../data
     image_size: &IMG_SIZE 150
     channels: &IMG_CHANNELS 3
     num_classes: &NUM_CLASSES 7
     batch_size: 16 
-    max_tsteps: 10e3 #1e05
+    max_tsteps: 10e3
     learning_rate: 1.0e-3
     loss_type: "cross_entropy"
     nn_model:
