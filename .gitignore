@@ -8,4 +8,5 @@ _archiv/*
 *.zip
 data/
 run_scripts/lightning_logs/
+run_scripts/wandb/
 *.ipynb_checkpoints

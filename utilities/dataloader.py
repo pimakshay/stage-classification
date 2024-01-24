@@ -42,9 +42,35 @@ def split_train_val_test(data_dir, data, ratio=[0.7,0.2,0.1], save_as_csv=False)
         test_data = pd.concat([test_data, test], ignore_index=True)
 
     if save_as_csv:
-        train_data.to_csv(os.path.join(data_dir, 'train_data.csv'), index=False)
-        val_data.to_csv(os.path.join(data_dir, 'val_data.csv'), index=False)
-        test_data.to_csv(os.path.join(data_dir, 'test_data.csv'), index=False)
+        train_data.to_csv(os.path.join(data_dir, 'train_data_t1.csv'), index=False)
+        val_data.to_csv(os.path.join(data_dir, 'val_data_t1.csv'), index=False)
+        test_data.to_csv(os.path.join(data_dir, 'test_data_t1.csv'), index=False)
+
+    return train_data, val_data, test_data
+
+
+def split_train_val_test_t2(data_dir, data, save_as_csv=False):
+    cameras = data['camera'].unique()
+    train_data, val_data, test_data = pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
+
+    for camera in cameras:
+        if camera == "cam4":
+            test = data[data['camera'] == camera]
+            test_data = pd.concat([test_data, test], ignore_index=True)
+        else:
+            camera_data = data[data['camera'] == camera]
+            
+            # Split for each camera (ratio: train:val:test --> 70:20:10)
+            train, val = train_test_split(camera_data, test_size=0.2, random_state=42)
+            # val, test = train_test_split(temp, test_size=0.33, random_state=42)
+            
+            train_data = pd.concat([train_data, train], ignore_index=True)
+            val_data = pd.concat([val_data, val], ignore_index=True)
+
+    if save_as_csv:
+        train_data.to_csv(os.path.join(data_dir, 'train_data_t2.csv'), index=False)
+        val_data.to_csv(os.path.join(data_dir, 'val_data_t2.csv'), index=False)
+        test_data.to_csv(os.path.join(data_dir, 'test_data_t2.csv'), index=False)
 
     return train_data, val_data, test_data
 
