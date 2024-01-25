@@ -6,6 +6,7 @@ _archiv/*
 *.ipa
 *.log
 *.zip
+*.ckpt
 data/
 run_scripts/lightning_logs/
 run_scripts/wandb/

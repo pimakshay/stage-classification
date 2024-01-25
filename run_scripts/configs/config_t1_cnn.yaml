@@ -2,7 +2,7 @@
 model:
   target: models.classifier_t1.Classifier
   params:
-    data_dir: ../data
+    data_dir: /home/akshay/Documents/cse_sem_7/conxai_assignment/cloned/stage-classification/data
     image_size: &IMG_SIZE 150
     channels: &IMG_CHANNELS 3
     num_classes: &NUM_CLASSES 7
