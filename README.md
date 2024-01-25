@@ -22,13 +22,19 @@ Task 2: Time-series Classification
 
 We use two different models to perform time-series image classification. The first model is based on [LSTM networks](models/lstm.py), whereas the second model is based on [CNN and LSTM networks](models/cnn_lstm.py). The system class for this implementation can be found [here](models/classifier_t2.py).
 
+## Training and Inference
+
+Training info:
+- Computational resources: NVIDIA V100 Tensor Core GPU
+- Maximum iterations: 10k to 100k
+- Time taken by each experiment: 1 to 1.5hrs
 
 The jupyter notebooks and configuration files to train the models can be found [here](run_scripts/) and [here](run_scripts/configs/).
 
 To run the trained models:
 - Download the dataset --> Create a folder `./data` and place all the data files.
-- Download and place the trained checkpoints [here](run_scripts/lightning_logs/checkpoints/).
-- Run the jupyter notebook `./run_scripts/trained_models.ipynb`
+- Download the checkpoint from [here](https://syncandshare.lrz.de/getlink/fiJH2GvJvkxVoayfTQy2TR/task1_cnn.ckpt) and place it in folder [run_scripts/lightning_logs/checkpoints/](run_scripts/lightning_logs/checkpoints/).
+- Run the jupyter notebook [trainedmodels-loadckpt.ipynb](run_scripts/trainedmodels-loadckpt.ipynb)
 
 
 ## Setting Up
