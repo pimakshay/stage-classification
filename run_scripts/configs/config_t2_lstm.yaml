@@ -1,6 +1,6 @@
 
 model:
-  target: models.classifier_t2.Classifier
+  target: models.classifier.Classifier
   params:
     data_dir: "/home/akshay/Documents/cse_sem_7/conxai_assignment/cloned/stage-classification/data"
     image_size: &IMG_SIZE 150
@@ -10,6 +10,7 @@ model:
     max_tsteps: 10 #1e05
     learning_rate: 1.0e-3
     loss_type: "cross_entropy"
+    task: 2
     nn_model:
       target: models.lstm.LSTMModel
       params:

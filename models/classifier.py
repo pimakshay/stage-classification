@@ -6,11 +6,8 @@ import torch
 import pytorch_lightning as pl
 import torch.nn as nn
 import torch.nn.functional as F
-import torchvision
-from torchvision.transforms import Compose, ToTensor, Lambda, ToPILImage, CenterCrop, Resize
-from functools import partial
 
-from utilities.dataloader import check_and_update_csv, split_train_val_test, get_dataset
+from utilities.dataloader import split_train_val_test, split_train_val_test_t2, get_dataset
 from utilities.initialize_configs import *
 from torch.utils.tensorboard import SummaryWriter
 LOGS_PATH = os.path.join(os.getcwd(),'lightning_logs')
@@ -22,12 +19,13 @@ class Classifier(pl.LightningModule):
                  image_size=128,
                  channels=3,
                  num_classes=7,
-                 loss_type="mse",
+                 loss_type="cross_entropy",
                  learning_rate=0.001,
                  max_tsteps=100000,
                  batch_size=16,
                  data_dir="",
-                 nn_model=None
+                 nn_model=None,
+                 task=1
                  ) -> None:
 
         super().__init__()
@@ -53,8 +51,10 @@ class Classifier(pl.LightningModule):
         for i, item in enumerate(class_labels):
             self.class_labels_dict[i] = item
 
-
-        self.train_df, self.val_df, self.test_df = split_train_val_test(data_dir, self.dataframe, save_as_csv=False)                     
+        if task==1:
+            self.train_df, self.val_df, self.test_df = split_train_val_test(data_dir, self.dataframe, save_as_csv=False)                     
+        elif task==2:
+            self.train_df, self.val_df, self.test_df = split_train_val_test_t2(data_dir, self.dataframe, save_as_csv=False)                     
         self.train_dataset, self.val_dataset, self.test_dataset = get_dataset(self.train_df, self.val_df, self.test_df, img_dir=img_dir, img_size=image_size)
 
         self.model = instantiate_from_configs(nn_model)
@@ -97,16 +97,6 @@ class Classifier(pl.LightningModule):
         opt = torch.optim.AdamW(params, lr=lr)
         return opt
 
-    # def get_input(self, batch, k):
-    #     x = batch
-    #     x = x.to(memory_format=torch.contiguous_format).float()
-    #     return x
-
-    # def shared_step(self, batch):
-    #     x = self.get_input(batch, self.first_stage_key)
-    #     loss, loss_dict = self(x)
-    #     return loss, loss_dict
-
     def training_step(self, batch, batch_idx):
         (x,y) = batch # x:image, y:label   
         loss, loss_dict = self(x,y)
@@ -119,12 +109,6 @@ class Classifier(pl.LightningModule):
         
         lr = self.optimizers().param_groups[0]['lr']
         self.log('lr_abs', lr, prog_bar=True, logger=True, on_step=False, on_epoch=True)
-            
-        # # N = self.epochs // 5 # linear lr-scheduling
-        # if self.trainer.global_step < self.warmup_steps:
-        #     lr_scale = min(1.0, float(self.trainer.global_step + 1) / self.warmup_steps)
-        #     for pg in self.optimizers().param_groups:
-        #         pg["lr"] = lr_scale * self.learning_rate
 
         return loss
 
