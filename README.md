@@ -16,11 +16,11 @@ Data cleaning, pre-processing, and loading are carried out to prepare the data f
 
 Task 1: Image Classification
 
-We use a 3-stage convolutional network followed by linear layers to implement an image classifier. The system class for this implementation can be found [here](models/classifier_t1.py), and the model used for this architecture can be found [here](models/cnn.py).
+We use a 3-stage convolutional network followed by linear layers to implement an image classifier. The system class for this implementation can be found [here](models/classifier.py), and the model used for this architecture can be found [here](models/cnn.py).
 
 Task 2: Time-series Classification
 
-We use two different models to perform time-series image classification. The first model is based on [LSTM networks](models/lstm.py), whereas the second model is based on [CNN and LSTM networks](models/cnn_lstm.py). The system class for this implementation can be found [here](models/classifier_t2.py).
+We use two different models to perform time-series image classification. The first model is based on [LSTM networks](models/lstm.py), whereas the second model is based on [CNN and LSTM networks](models/cnn_lstm.py). The system class for this implementation can be found [here](models/classifier.py).
 
 ## Training and Inference
 
